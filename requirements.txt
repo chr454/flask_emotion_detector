@@ -1,0 +1,10 @@
+Flask
+tensorflow
+opencv-python
+numpy
+Pillow
+sqlalchemy
+wtforms
+flask-wtf
+gunicorn
+huggingface_hub

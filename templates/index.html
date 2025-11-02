@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Face Emotion Detection</title>
+</head>
+<body>
+    <h2>Student Emotion Detection Form</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+        <label>Full Name:</label><br>
+        <input type="text" name="name" required><br><br>
+
+        <label>Email:</label><br>
+        <input type="email" name="email" required><br><br>
+
+        <label>Matric Number:</label><br>
+        <input type="text" name="matric_no" required><br><br>
+
+        <label>Upload Image:</label><br>
+        <input type="file" name="image" accept="image/*"><br><br>
+
+        <p><b>OR</b></p>
+        <button type="button" onclick="startCamera()">Open Camera</button><br><br>
+
+        <video id="video" width="320" height="240" autoplay></video><br>
+        <button type="button" onclick="capturePhoto()">Capture</button><br><br>
+
+        <canvas id="canvas" width="320" height="240" style="display:none;"></canvas>
+        <input type="hidden" name="webcam_image" id="webcam_image">
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <hr>
+
+    {% if emotion %}
+        <h3>Detected Emotion: {{ emotion }}</h3>
+        <p>{{ message }}</p>
+    {% endif %}
+
+    <script>
+        let video = document.getElementById('video');
+        let canvas = document.getElementById('canvas');
+        let webcamInput = document.getElementById('webcam_image');
+
+        function startCamera() {
+            navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => { video.srcObject = stream; })
+            .catch(err => { alert("Camera access denied or unavailable."); });
+        }
+
+        function capturePhoto() {
+            let context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, 320, 240);
+            let dataURL = canvas.toDataURL('image/jpeg');
+            webcamInput.value = dataURL;
+            alert("Photo captured! Now click Submit.");
+        }
+    </script>
+</body>
+</html>
